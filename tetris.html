@@ -17,73 +17,61 @@
       var canvasWidth = 750;
       var canvasHeight = 750;
 
+      var sqrsAcross = 16;
+      var sqrsTall = 20;
+
       var grid = [
-        ["x","x","x","x","x","x","x","x","x","x","x"],
-        ["x","x","x","x","x","x","x","x","x","x","x"],
-        ["x","x","x","x","x","x","x","x","x","x","x"],
-        ["x","x","x","x","x","x","x","x","x","x","x"],
-        ["x","x","x","x","x","x","x","x","x","x","x"],
-        ["x","x","x","x","x","x","x","x","x","x","x"],
-        ["x","x","x","x","x","x","x","x","x","x","x"],
-        ["x","x","x","x","x","x","x","x","x","x","x"],
-        ["x","x","x","x","x","x","x","x","x","x","x"],
-        ["x","x","x","x","x","x","x","x","x","x","x"],
-        ["x","x","x","x","x","x","x","x","x","x","x"],
-        ["x","x","x","x","x","x","x","x","x","x","x"],
-        ["x","x","x","x","x","x","x","x","x","x","x"],
-        ["x","x","x","x","x","x","x","x","x","x","x"],
-        ["x","x","x","x","x","x","x","x","x","x","x"],
-        ["x","x","x","x","x","x","x","x","x","x","x"],
-        ["x","x","x","x","x","x","x","x","x","x","x"],
-        ["x","x","x","x","x","x","x","x","x","x","x"],
-        ["x","x","x","x","x","x","x","x","x","x","x"],
-        ["x","x","x","x","x","x","x","x","x","x","x"]
+
+        ["x","x","x","x","x","x","x","x","x","x","x","x","x","x","x","x"],
+        ["x","x","x","x","x","x","x","x","x","x","x","x","x","x","x","x"],
+        ["x","x","x","x","x","x","x","x","x","x","x","x","x","x","x","x"],
+        ["x","x","x","x","x","x","x","x","x","x","x","x","x","x","x","x"],
+        ["x","x","x","x","x","x","x","x","x","x","x","x","x","x","x","x"],
+        ["x","x","x","x","x","x","x","x","x","x","x","x","x","x","x","x"],
+        ["x","x","x","x","x","x","x","x","x","x","x","x","x","x","x","x"],
+        ["x","x","x","x","x","x","x","x","x","x","x","x","x","x","x","x"],
+        ["x","x","x","x","x","x","x","x","x","x","x","x","x","x","x","x"],
+        ["x","x","x","x","x","x","x","x","x","x","x","x","x","x","x","x"],
+        ["x","x","x","x","x","x","x","x","x","x","x","x","x","x","x","x"],
+        ["x","x","x","x","x","x","x","x","x","x","x","x","x","x","x","x"],
+        ["x","x","x","x","x","x","x","x","x","x","x","x","x","x","x","x"],
+        ["x","x","x","x","x","x","x","x","x","x","x","x","x","x","x","x"],
+        ["x","x","x","x","x","x","x","x","x","x","x","x","x","x","x","x"],
+        ["x","x","x","x","x","x","x","x","x","x","x","x","x","x","x","x"],
+        ["x","x","x","x","x","x","x","x","x","x","x","x","x","x","x","x"],
+        ["x","x","x","x","x","x","x","x","x","x","x","x","x","x","x","x"],
+        ["x","x","x","x","x","x","x","x","x","x","x","x","x","x","x","x"],
+        ["x","x","x","x","x","x","x","x","x","x","x","x","x","x","x","x"],
+
       ];
 
       function draw() {
 
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        var x = 0;
-        var y = 0;
+        var x = 1;
+        var y = 1;
+
         cubeSide = 30;
-        sqrCol = "black";
+
+        ctx.fillStyle = "black";
+        ctx.fillRect(0, 0, (sqrsAcross*(cubeSide+1)+1), (sqrsTall*(cubeSide+1)+1));
 
         grid.forEach((row) => {
 
           row.forEach((square) => {
 
-            ctx.fillStyle = sqrCol;
+            ctx.fillStyle = "white";
             ctx.fillRect(x,y,cubeSide,cubeSide);
-            x += cubeSide;
-            if (sqrCol == "black") {
-              sqrCol = "white";
-            } else {
-              sqrCol = "black";
-            };
+
+            x += cubeSide + 1;
 
           });
 
-          y += cubeSide;
-          x = 0;
+          y += cubeSide + 1;
+          x = 1;
 
         });
-
-        ctx.fillStyle = "red";
-        ctx.beginPath();
-        ctx.arc(x, y, 15, 0, 2 * Math.PI);
-        ctx.fill();
-
-        x = x + xChg;
-        y = y + yChg;
-
-        if (x > canvasWidth || x < 0) {
-          xChg = -xChg;
-        }
-
-        if (y > canvasHeight || y < 0) {
-          yChg = -yChg;
-        }
 
       }
 
