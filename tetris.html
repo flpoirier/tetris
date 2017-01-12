@@ -20,6 +20,9 @@
       var sqrsAcross = 16;
       var sqrsTall = 20;
 
+      var pieceY = 0;
+      var pieceX = 4;
+
       var grid = [
 
         ["x","x","x","x","x","x","x","x","x","x","x","x","x","x","x","x"],
@@ -45,9 +48,29 @@
 
       ];
 
+      function longpiece() {
+
+        if (pieceY < sqrsTall - 1) {
+
+          for (idx = pieceX; idx < pieceX + 4; idx++) {
+            grid[pieceY][idx] = "x";
+          }
+
+          pieceY += 1;
+
+          for (idx = pieceX; idx < pieceX + 4; idx++) {
+            grid[pieceY][idx] = "y";
+          }
+
+        };
+
+      }
+
       function draw() {
 
         ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        longpiece();
 
         var x = 1;
         var y = 1;
@@ -61,8 +84,13 @@
 
           row.forEach((square) => {
 
-            ctx.fillStyle = "white";
-            ctx.fillRect(x,y,cubeSide,cubeSide);
+            if (square === "x") {
+              ctx.fillStyle = "white";
+              ctx.fillRect(x,y,cubeSide,cubeSide);
+            } else {
+              ctx.fillStyle = "orange";
+              ctx.fillRect(x,y,cubeSide,cubeSide);
+            }
 
             x += cubeSide + 1;
 
@@ -75,7 +103,7 @@
 
       }
 
-      setInterval(draw, 30);
+      setInterval(draw, 400);
 
     </script>
   </body>
