@@ -6,16 +6,22 @@
     <style>
       * { padding: 0; margin: 0; }
       canvas { display: block; margin: 0 auto; }
+      canvas:hover { cursor: pointer; }
     </style>
   </head>
   <body>
-    <canvas id="myCanvas" width="750" height="750"></canvas>
+    <canvas id="myCanvas" width="514" height="642"></canvas>
     <script>
+
+      var sqrsAcross = 16;
+      var sqrsTall = 20;
+      var cubeSide = 30;
+      var border = 2;
 
       var canvas = document.getElementById("myCanvas");
       var ctx = canvas.getContext("2d");
-      var canvasWidth = 750;
-      var canvasHeight = 750;
+      var canvasWidth = ((cubeSide + border) * sqrsAcross) + border;
+      var canvasHeight = ((cubeSide + border) * sqrsTall) + border;;
 
       var upPressed = false;
       var downPressed = false;
@@ -26,14 +32,10 @@
       var sideDelay = 0;
       var downDelay = 0;
 
-      var sqrsAcross = 16;
-      var sqrsTall = 20;
-      var cubeSide = 30;
-
       var pieceYGrid = 0;
       var pieceXGrid = Math.floor(Math.random() * 13)
-      var pieceY = 1;
-      var pieceX = (pieceXGrid) * 31 + 1;
+      var pieceY = 2;
+      var pieceX = (pieceXGrid) * (cubeSide + border) + border;
       var pieceTimer = 0;
       var piecePos = 0;
 
@@ -93,7 +95,7 @@
       var piece = pieces[Math.floor(Math.random() * 7)];
 
       var colors = {};
-      colors["x"] = "white";
+      colors["x"] = "#DDDDDD";
       colors["r"] = "red";
       colors["o"] = "orange";
       colors["y"] = "yellow";
@@ -132,7 +134,7 @@
         pieceTimer += 1;
 
         if (pieceTimer === 10) {
-          pieceY += 31;
+          pieceY += (cubeSide + border);
           pieceYGrid += 1;
           pieceTimer = 0;
         }
@@ -152,7 +154,7 @@
         }
 
         if (leftPressed && sideDelay === 0) {
-          pieceX -= 31;
+          pieceX -= (cubeSide + border);
           pieceXGrid -= 1;
           sideDelay = 3;
         };
@@ -160,7 +162,7 @@
         pieceCheck("left");
 
         if (rightPressed && sideDelay === 0) {
-          pieceX += 31;
+          pieceX += (cubeSide + border);
           pieceXGrid += 1;
           sideDelay = 3;
         };
@@ -168,7 +170,7 @@
         pieceCheck("right");
 
         if (downPressed && downDelay === 0) {
-          pieceY += 31;
+          pieceY += (cubeSide + border);
           pieceYGrid += 1;
           downDelay = 3;
         }
@@ -191,13 +193,14 @@
 
       function drawGrid() {
 
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = "orange";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        var x = 1;
-        var y = 1;
+        var x = 2;
+        var y = 2;
 
-        ctx.fillStyle = "black";
-        ctx.fillRect(0, 0, (sqrsAcross*(cubeSide+1)+1), (sqrsTall*(cubeSide+1)+1));
+        ctx.fillStyle = "#777777";
+        ctx.fillRect(0, 0, (sqrsAcross*(cubeSide+2)+2), (sqrsTall*(cubeSide+2)+2));
 
         grid.forEach((row) => {
 
@@ -205,14 +208,17 @@
 
             ctx.fillStyle = colors[square];
             ctx.fillRect(x,y,cubeSide,cubeSide);
-            x += cubeSide + 1;
+            x += cubeSide + 2;
 
           });
 
-          y += cubeSide + 1;
-          x = 1;
-
+          y += cubeSide + 2;
+          x = 2;
           drawPiece();
+
+          if (!begun) {
+            drawIntro();
+          }
 
         });
 
@@ -229,8 +235,13 @@
         for (let idx = 0; idx < 4; idx++) {
           let x = piece[piecePos][idx][0];
           let y = piece[piecePos][idx][1];
-          ctx.fillRect(pieceX+(x*31), pieceY+(y*31), cubeSide, cubeSide);
+          ctx.fillRect(pieceX+(x*(cubeSide + border)), pieceY+(y*(cubeSide + border)), cubeSide, cubeSide);
         }
+      }
+
+      function drawIntro() {
+        ctx.fillStyle = "#8B008B";
+        ctx.fillRect((cubeSide+border)*4+border, (cubeSide+border)*6+border, 254, 190);
       }
 
       function pieceIntersecting() {
@@ -254,13 +265,13 @@
       function pieceCheck(direction) {
         if (pieceIntersecting()) {
           if (direction === "left") {
-            pieceX += 31;
+            pieceX += (cubeSide + border);
             pieceXGrid += 1;
           } else if (direction === "right") {
-            pieceX -= 31;
+            pieceX -= (cubeSide + border);
             pieceXGrid -= 1;
           } else if (direction === "down") {
-            pieceY -= 31;
+            pieceY -= (cubeSide + border);
             pieceYGrid -= 1;
             // only creates a new piece if move would intersect on the bottom
             pieceStop();
@@ -286,8 +297,8 @@
         drawPiece();
         pieceYGrid = 0;
         pieceXGrid = Math.floor(Math.random() * 13)
-        pieceY = 1;
-        pieceX = (pieceXGrid) * 31 + 1;
+        pieceY = 2;
+        pieceX = (pieceXGrid) * (cubeSide + border) + border;
         pieceTimer = 0;
         piecePos = 0;
         piece = pieces[Math.floor(Math.random() * 7)];
