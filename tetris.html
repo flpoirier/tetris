@@ -24,10 +24,26 @@
 
       var sqrsAcross = 16;
       var sqrsTall = 20;
+      var cubeSide = 30;
 
-      var pieceY = 0;
-      var pieceX = 4;
-      var pieceDown = 0;
+      var pieceY = 1;
+      var pieceX = 125;
+      var pieceTimer = 0;
+      var piecePos = 0;
+
+      var square = {};
+      square[0] = [[0,0],[1,0],[0,1],[1,1]];
+      square[1] = [[0,0],[1,0],[0,1],[1,1]];
+      square[2] = [[0,0],[1,0],[0,1],[1,1]];
+      square[3] = [[0,0],[1,0],[0,1],[1,1]];
+      square["color"] = "pink";
+
+      var long = {};
+      long[0] = [[0,1],[1,1],[2,1],[3,1]];
+      long[1] = [[2,0],[2,1],[2,2],[2,3]];
+      long[2] = [[0,2],[1,2],[2,2],[3,2]];
+      long[3] = [[1,0],[1,1],[1,2],[1,3]];
+      long["color"] = "green";
 
       var grid = [
 
@@ -54,39 +70,19 @@
 
       ];
 
-      function longpiece() {
-
-        if (pieceY < sqrsTall - 1) {
-
-          for (idx = pieceX; idx < pieceX + 4; idx++) {
-            grid[pieceY][idx] = "x";
-          }
-
-          pieceY += 1;
-
-          for (idx = pieceX; idx < pieceX + 4; idx++) {
-            grid[pieceY][idx] = "y";
-          }
-
-        };
-
-      }
-
       function draw() {
 
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        pieceDown += 1;
+        pieceTimer += 1;
 
-        if (pieceDown === 10) {
-          longpiece();
-          pieceDown = 0;
+        if (pieceTimer === 10) {
+          pieceY += 31;
+          pieceTimer = 0;
         }
 
         var x = 1;
         var y = 1;
-
-        cubeSide = 30;
 
         ctx.fillStyle = "black";
         ctx.fillRect(0, 0, (sqrsAcross*(cubeSide+1)+1), (sqrsTall*(cubeSide+1)+1));
@@ -120,6 +116,17 @@
           pieceX += 1;
         };
 
+        drawPiece(square);
+
+      }
+
+      function drawPiece(piece) {
+        ctx.fillStyle = piece["color"];
+        for (let idx = 0; idx < 4; idx++) {
+          let x = piece[piecePos][idx][0];
+          let y = piece[piecePos][idx][1];
+          ctx.fillRect(pieceX+(x*31), pieceY+(y*31), cubeSide, cubeSide);
+        }
       }
 
       function keyDownHandler(e) {
