@@ -24,6 +24,7 @@
 
       var rotateDelay = 0;
       var sideDelay = 0;
+      var downDelay = 0;
 
       var sqrsAcross = 16;
       var sqrsTall = 20;
@@ -135,19 +136,23 @@
           pieceTimer = 0;
         }
 
-        if (pieceIntersecting()) {
-          pieceY -= 31;
-          pieceYGrid -= 1;
-          pieceStop();
-          newPiece();
-        }
-
         if (rotateDelay > 0) {
           rotateDelay -= 1;
         }
 
         if (sideDelay > 0) {
           sideDelay -= 1;
+        }
+
+        if (downDelay > 0) {
+          downDelay -= 1;
+        }
+
+        if (pieceIntersecting()) {
+          pieceY -= 31;
+          pieceYGrid -= 1;
+          pieceStop();
+          newPiece();
         }
 
         var x = 1;
@@ -182,6 +187,12 @@
           pieceXGrid += 1;
           sideDelay = 3;
         };
+
+        if (downPressed && downDelay === 0) {
+          pieceY += 31;
+          pieceYGrid += 1;
+          downDelay = 3;
+        }
 
         if (upPressed && piecePos < 3 && rotateDelay == 0) {
           piecePos += 1;
