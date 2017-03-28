@@ -134,6 +134,13 @@
           pieceTimer = 0;
         }
 
+        if (pieceIntersecting()) {
+          pieceY -= 31;
+          pieceYGrid -= 1;
+          pieceStop();
+          newPiece();
+        }
+
         if (rotateDelay > 0) {
           rotateDelay -= 1;
         }
@@ -147,24 +154,6 @@
         grid.forEach((row) => {
 
           row.forEach((square) => {
-
-            // if (square === "x") {
-            //   ctx.fillStyle = "white";
-            // } else if (square === "r") {
-            //   ctx.fillStyle = "red";
-            // } else if (square === "o") {
-            //   ctx.fillStyle = "orange";
-            // } else if (square === "y") {
-            //   ctx.fillStyle = "yellow";
-            // } else if (square === "g") {
-            //   ctx.fillStyle = "green";
-            // } else if (square === "b") {
-            //   ctx.fillStyle = "blue";
-            // } else if (square === "p") {
-            //   ctx.fillStyle = "purple";
-            // } else if (square === "k") {
-            //   ctx.fillStyle = "pink";
-            // }
 
             ctx.fillStyle = colors[square];
             ctx.fillRect(x,y,cubeSide,cubeSide);
@@ -195,11 +184,6 @@
 
         drawPiece();
 
-        if (pieceIntersecting()) {
-          pieceStop();
-          newPiece();
-        }
-
       }
 
       function drawPiece() {
@@ -216,7 +200,7 @@
         for (let idx = 0; idx < 4; idx++) {
           let x = piece[piecePos][idx][0] + pieceXGrid;
           let y = piece[piecePos][idx][1] + pieceYGrid;
-          if (y >= sqrsTall - 1) {
+          if (y >= sqrsTall) {
             intersecting = true;
           } else if (grid[y][x] != "x") {
             intersecting = true;
