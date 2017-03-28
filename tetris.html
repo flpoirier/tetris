@@ -30,6 +30,8 @@
 
       var pieceY = 1;
       var pieceX = 125;
+      var pieceYGrid = 0;
+      var pieceXGrid = 4;
       var pieceTimer = 0;
       var piecePos = 0;
 
@@ -38,52 +40,62 @@
       long[1] = [[2,0],[2,1],[2,2],[2,3]];
       long[2] = [[0,2],[1,2],[2,2],[3,2]];
       long[3] = [[1,0],[1,1],[1,2],[1,3]];
-      long["color"] = "green";
+      long["symbol"] = "g";
 
       var ell1 = {};
       ell1[0] = [[1,0],[1,1],[1,2],[0,2]];
       ell1[1] = [[0,0],[0,1],[1,1],[2,1]];
       ell1[2] = [[1,0],[2,0],[1,1],[1,2]];
       ell1[3] = [[0,1],[1,1],[2,1],[2,2]];
-      ell1["color"] = "orange";
+      ell1["symbol"] = "o";
 
       var ell2 = {};
       ell2[0] = [[1,0],[1,1],[1,2],[2,2]];
       ell2[1] = [[0,1],[1,1],[2,1],[0,2]];
       ell2[2] = [[0,0],[1,0],[1,1],[1,2]];
       ell2[3] = [[2,0],[0,1],[1,1],[2,1]];
-      ell2["color"] = "yellow";
+      ell2["symbol"] = "y";
 
       var square = {};
       square[0] = [[0,0],[1,0],[0,1],[1,1]];
       square[1] = [[0,0],[1,0],[0,1],[1,1]];
       square[2] = [[0,0],[1,0],[0,1],[1,1]];
       square[3] = [[0,0],[1,0],[0,1],[1,1]];
-      square["color"] = "pink";
+      square["symbol"] = "k";
 
       var zag1 = {};
       zag1[0] = [[1,1],[2,1],[0,2],[1,2]];
       zag1[1] = [[0,0],[0,1],[1,1],[1,2]];
       zag1[2] = [[1,0],[2,0],[0,1],[1,1]];
       zag1[3] = [[1,0],[1,1],[2,1],[2,2]];
-      zag1["color"] = "purple";
+      zag1["symbol"] = "p";
 
       var tee = {};
       tee[0] = [[0,1],[1,1],[2,1],[1,2]];
       tee[1] = [[1,0],[0,1],[1,1],[1,2]];
       tee[2] = [[1,0],[0,1],[1,1],[2,1]];
       tee[3] = [[1,0],[1,1],[1,2],[2,1]];
-      tee["color"] = "red";
+      tee["symbol"] = "r";
 
       var zag2 = {};
       zag2[0] = [[0,1],[1,1],[1,2],[2,2]];
       zag2[1] = [[1,0],[0,1],[1,1],[0,2]];
       zag2[2] = [[0,0],[1,0],[1,1],[2,1]];
       zag2[3] = [[2,0],[1,1],[2,1],[1,2]];
-      zag2["color"] = "blue";
+      zag2["symbol"] = "b";
 
       var pieces = [long, ell1, ell2, square, zag1, tee, zag2];
       var piece = pieces[Math.floor(Math.random() * 7)];
+
+      var colors = {};
+      colors["x"] = "white";
+      colors["r"] = "red";
+      colors["o"] = "orange";
+      colors["y"] = "yellow";
+      colors["g"] = "green";
+      colors["b"] = "blue";
+      colors["p"] = "purple";
+      colors["k"] = "pink";
 
       var grid = [
 
@@ -117,7 +129,8 @@
         pieceTimer += 1;
 
         if (pieceTimer === 10) {
-          // pieceY += 31;
+          pieceY += 31;
+          pieceYGrid += 1;
           pieceTimer = 0;
         }
 
@@ -135,14 +148,26 @@
 
           row.forEach((square) => {
 
-            if (square === "x") {
-              ctx.fillStyle = "white";
-              ctx.fillRect(x,y,cubeSide,cubeSide);
-            } else {
-              ctx.fillStyle = "orange";
-              ctx.fillRect(x,y,cubeSide,cubeSide);
-            }
+            // if (square === "x") {
+            //   ctx.fillStyle = "white";
+            // } else if (square === "r") {
+            //   ctx.fillStyle = "red";
+            // } else if (square === "o") {
+            //   ctx.fillStyle = "orange";
+            // } else if (square === "y") {
+            //   ctx.fillStyle = "yellow";
+            // } else if (square === "g") {
+            //   ctx.fillStyle = "green";
+            // } else if (square === "b") {
+            //   ctx.fillStyle = "blue";
+            // } else if (square === "p") {
+            //   ctx.fillStyle = "purple";
+            // } else if (square === "k") {
+            //   ctx.fillStyle = "pink";
+            // }
 
+            ctx.fillStyle = colors[square];
+            ctx.fillRect(x,y,cubeSide,cubeSide);
             x += cubeSide + 1;
 
           });
@@ -170,10 +195,15 @@
 
         drawPiece();
 
+        if (pieceIntersecting()) {
+          pieceStop();
+          newPiece();
+        }
+
       }
 
       function drawPiece() {
-        ctx.fillStyle = piece["color"];
+        ctx.fillStyle = colors[piece["symbol"]];
         for (let idx = 0; idx < 4; idx++) {
           let x = piece[piecePos][idx][0];
           let y = piece[piecePos][idx][1];
@@ -182,7 +212,35 @@
       }
 
       function pieceIntersecting() {
+        let intersecting = false;
+        for (let idx = 0; idx < 4; idx++) {
+          let x = piece[piecePos][idx][0] + pieceXGrid;
+          let y = piece[piecePos][idx][1] + pieceYGrid;
+          if (y >= sqrsTall - 1) {
+            intersecting = true;
+          } else if (grid[y][x] != "x") {
+            intersecting = true;
+           }
+        }
+        return intersecting;
+      }
 
+      function pieceStop() {
+        for (let idx = 0; idx < 4; idx++) {
+          let x = piece[piecePos][idx][0] + pieceXGrid;
+          let y = piece[piecePos][idx][1] + pieceYGrid;
+          grid[y][x] = piece["symbol"];
+        }
+      }
+
+      function newPiece() {
+        pieceY = 1;
+        pieceX = 125;
+        pieceYGrid = 0;
+        pieceXGrid = 4;
+        pieceTimer = 0;
+        piecePos = 0;
+        piece = pieces[Math.floor(Math.random() * 7)];
       }
 
       function keyDownHandler(e) {
