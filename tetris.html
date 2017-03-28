@@ -37,6 +37,7 @@
       var pieceTimer = 0;
       var piecePos = 0;
 
+      var begun = false;
       var over = false;
 
       var long = {};
@@ -221,6 +222,9 @@
         if (over) {
           return;
         }
+        if (!begun) {
+          return;
+        }
         ctx.fillStyle = colors[piece["symbol"]];
         for (let idx = 0; idx < 4; idx++) {
           let x = piece[piecePos][idx][0];
@@ -306,14 +310,20 @@
         }
       }
 
-      function gameOver() {
-        over = true;
-        clearInterval(playInterval);
-      }
-
       function deleteRow(row) {
         grid.splice(row, 1);
         grid.unshift(["x","x","x","x","x","x","x","x","x","x","x","x","x","x","x","x"]);
+      }
+
+      function startGame() {
+        document.removeEventListener("click", startGame);
+        begun = true;
+        playInterval = setInterval(play, 50);
+      }
+
+      function gameOver() {
+        over = true;
+        clearInterval(playInterval);
       }
 
       function keyDownHandler(e) {
@@ -346,11 +356,11 @@
         }
       }
 
+      document.addEventListener("click", startGame, false);
       document.addEventListener("keydown", keyDownHandler, false);
       document.addEventListener("keyup", keyUpHandler, false);
 
       drawInterval = setInterval(drawGrid, 50);
-      playInterval = setInterval(play, 50);
 
     </script>
   </body>
