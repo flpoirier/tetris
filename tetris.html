@@ -23,6 +23,7 @@
       var rightPressed = false;
 
       var rotateDelay = 0;
+      var sideDelay = 0;
 
       var sqrsAcross = 16;
       var sqrsTall = 20;
@@ -145,6 +146,10 @@
           rotateDelay -= 1;
         }
 
+        if (sideDelay > 0) {
+          sideDelay -= 1;
+        }
+
         var x = 1;
         var y = 1;
 
@@ -166,12 +171,16 @@
 
         });
 
-        if (leftPressed && pieceX > 0) {
-          pieceX -= 1;
+        if (leftPressed && pieceXGrid > 0 && sideDelay === 0) {
+          pieceX -= 31;
+          pieceXGrid -= 1;
+          sideDelay = 3;
         };
 
-        if (rightPressed && pieceX < sqrsAcross - 4) {
-          pieceX += 1;
+        if (rightPressed && pieceXGrid < (sqrsAcross - 4) && sideDelay === 0) {
+          pieceX += 31;
+          pieceXGrid += 1;
+          sideDelay = 3;
         };
 
         if (upPressed && piecePos < 3 && rotateDelay == 0) {
