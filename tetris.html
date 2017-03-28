@@ -126,9 +126,7 @@
 
       ];
 
-      function draw() {
-
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
+      function play() {
 
         pieceTimer += 1;
 
@@ -151,27 +149,6 @@
         if (downDelay > 0) {
           downDelay -= 1;
         }
-
-        var x = 1;
-        var y = 1;
-
-        ctx.fillStyle = "black";
-        ctx.fillRect(0, 0, (sqrsAcross*(cubeSide+1)+1), (sqrsTall*(cubeSide+1)+1));
-
-        grid.forEach((row) => {
-
-          row.forEach((square) => {
-
-            ctx.fillStyle = colors[square];
-            ctx.fillRect(x,y,cubeSide,cubeSide);
-            x += cubeSide + 1;
-
-          });
-
-          y += cubeSide + 1;
-          x = 1;
-
-        });
 
         if (leftPressed && sideDelay === 0) {
           pieceX -= 31;
@@ -207,9 +184,36 @@
 
         pieceCheck("rot");
 
-        drawPiece();
-
         checkRows();
+
+      }
+
+      function drawGrid() {
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        var x = 1;
+        var y = 1;
+
+        ctx.fillStyle = "black";
+        ctx.fillRect(0, 0, (sqrsAcross*(cubeSide+1)+1), (sqrsTall*(cubeSide+1)+1));
+
+        grid.forEach((row) => {
+
+          row.forEach((square) => {
+
+            ctx.fillStyle = colors[square];
+            ctx.fillRect(x,y,cubeSide,cubeSide);
+            x += cubeSide + 1;
+
+          });
+
+          y += cubeSide + 1;
+          x = 1;
+
+          drawPiece();
+
+        });
 
       }
 
@@ -304,7 +308,7 @@
 
       function gameOver() {
         over = true;
-        clearInterval(drawInterval);
+        clearInterval(playInterval);
       }
 
       function deleteRow(row) {
@@ -345,7 +349,8 @@
       document.addEventListener("keydown", keyDownHandler, false);
       document.addEventListener("keyup", keyUpHandler, false);
 
-      drawInterval = setInterval(draw, 50);
+      drawInterval = setInterval(drawGrid, 50);
+      playInterval = setInterval(play, 50);
 
     </script>
   </body>
