@@ -207,6 +207,8 @@
 
         drawPiece();
 
+        checkRows();
+
       }
 
       function drawPiece() {
@@ -276,6 +278,25 @@
         pieceTimer = 0;
         piecePos = 0;
         piece = pieces[Math.floor(Math.random() * 7)];
+      }
+
+      function checkRows() {
+        for (let row = 0; row < sqrsTall; row++) {
+          let white = false;
+          for (let col = 0; col < sqrsAcross; col++) {
+            if (grid[row][col] === "x") {
+              white = true;
+            }
+          }
+          if (!white) {
+            deleteRow(row);
+          }
+        }
+      }
+
+      function deleteRow(row) {
+        grid.splice(row, 1);
+        grid.unshift(["x","x","x","x","x","x","x","x","x","x","x","x","x","x","x","x"]);
       }
 
       function keyDownHandler(e) {
