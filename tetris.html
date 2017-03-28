@@ -30,10 +30,10 @@
       var sqrsTall = 20;
       var cubeSide = 30;
 
-      var pieceY = 1;
-      var pieceX = 125;
       var pieceYGrid = 0;
-      var pieceXGrid = 4;
+      var pieceXGrid = Math.floor(Math.random() * 13)
+      var pieceY = 1;
+      var pieceX = (pieceXGrid) * 31 + 1;
       var pieceTimer = 0;
       var piecePos = 0;
 
@@ -276,10 +276,10 @@
 
       function newPiece() {
         drawPiece();
-        pieceY = 1;
-        pieceX = 125;
         pieceYGrid = 0;
-        pieceXGrid = 4;
+        pieceXGrid = Math.floor(Math.random() * 13)
+        pieceY = 1;
+        pieceX = (pieceXGrid) * 31 + 1;
         pieceTimer = 0;
         piecePos = 0;
         piece = pieces[Math.floor(Math.random() * 7)];
