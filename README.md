@@ -2,4 +2,10 @@
 
 This is a Tetris clone in progress. It's being built using jQuery.
 
-This page will update as features are developed.
+Features in progress:
+
+- Pause button
+- Preview of next piece
+- Score / levels
+- Gradually increase of speed
+- General CSS / design
