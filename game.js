@@ -15,22 +15,25 @@ var downPressed = false;
 var leftPressed = false;
 var rightPressed = false;
 
-var rotateDelay = 0;
-var sideDelay = 0;
-var downDelay = 0;
+var rotateDelay;
+var sideDelay;
+var downDelay;
 
-var pieceYGrid = 0;
-var pieceXGrid = Math.floor(Math.random() * (sqrsAcross-3));
-var pieceY = outerBorder;
-var pieceX = (pieceXGrid) * (cubeSide + border) + outerBorder;
-var pieceTimer = 0;
-var piecePos = 0;
+var pieceYGrid;
+var pieceXGrid;
+var pieceY;
+var pieceX;
+var pieceTimer;
+var piecePos;
 
 var begun = false;
 var over = false;
 
 var pieces = require('./pieces.js');
-var piece = pieces[Math.floor(Math.random() * 7)];
+var piece;
+var grid;
+
+resetVars();
 
 var colors = {};
 colors["x"] = "#DDDDDD";
@@ -50,8 +53,6 @@ function createRow() {
 function createGrid() {
   return Array.apply(null, Array(sqrsTall)).map( createRow );
 }
-
-var grid = createGrid();
 
 function resetVars() {
 
@@ -127,6 +128,9 @@ function play() {
 function drawGrid() {
 
   ctx.clearRect(0,0, canvas.width, canvas.height);
+
+  // ctx.fillStyle = "orange";
+  // ctx.fillRect(0,0,canvas.width, canvas.height);
 
   var x = outerBorder;
   var y = outerBorder;
@@ -284,7 +288,7 @@ function checkRows() {
 
 function deleteRow(row) {
   grid.splice(row, 1);
-  grid.unshift(["x","x","x","x","x","x","x","x","x","x","x","x","x","x","x","x"]);
+  grid.unshift(createRow());
 }
 
 function startGame() {
