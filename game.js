@@ -222,33 +222,53 @@ function drawPiece() {
 }
 
 function drawIntro() {
-  ctx.fillStyle = "#4B0082";
-  ctx.fillRect((cubeSide+border)*4+border, (cubeSide+border)*6+border, 254, 190);
+
+  let xCoord = 3*cubeSide + 3*border + outerBorder;
+  let yCoord = 7*cubeSide + 7*border + outerBorder;
+  let width = (sqrsAcross - 6)*(cubeSide+border) - border;
+  let height = 5*(cubeSide + border) - border;
+
+  ctx.fillStyle = "#888888";
+  ctx.fillRect(xCoord-outerBorder, yCoord-outerBorder, width+(2*outerBorder), height+(2*outerBorder));
+
+  ctx.fillStyle = "white";//"#4B0082";
+  ctx.fillRect(xCoord,yCoord,width,height);
   ctx.font = '48px sans-serif';
-  ctx.fillStyle = "white";
+  ctx.fillStyle = "blue";
   //width = 171; half width = about 85; height = 48; half height = 24;
   // canvas width="514" height="642"
 
-  ctx.fillText('TETRIS', 172, 297);
+  ctx.fillText('TETRIS', (canvasWidth/2)-85, (canvasHeight/2)-24);
 
+  ctx.fillStyle = "red";
   ctx.font = '18px sans-serif';
   //width: 100;
-  ctx.fillText('Click to play!', 207, 335);
+  ctx.fillText('Click to play!', (canvasWidth/2)-50, (canvasHeight/2)+15);
 }
 
 function drawOutro() {
-  ctx.fillStyle = "#4B0082";
-  ctx.fillRect((cubeSide+border)*4+border, (cubeSide+border)*6+border, 254, 190);
-  ctx.font = '39px sans-serif';
-  ctx.fillStyle = "white";
+
+  let xCoord = 3*cubeSide + 3*border + outerBorder;
+  let yCoord = 7*cubeSide + 7*border + outerBorder;
+  let width = (sqrsAcross - 6)*(cubeSide+border) - border;
+  let height = 5*(cubeSide + border) - border;
+
+  ctx.fillStyle = "#888888";
+  ctx.fillRect(xCoord-outerBorder, yCoord-outerBorder, width+(2*outerBorder), height+(2*outerBorder));
+
+  ctx.fillStyle = "white";//"#4B0082";
+  ctx.fillRect(xCoord,yCoord,width,height);
+  ctx.font = '30px sans-serif';
+  ctx.fillStyle = "black";
   //width = 236; half width = about 118; height = 48; half height = 24;
   // canvas width="514" height="642"
+  ctx.fillStyle = "red";
+  ctx.fillText('GAME OVER', xCoord+6, yCoord+70);
 
-  ctx.fillText('GAME OVER', 139, 297);
-
+  ctx.fillStyle = "blue";
   ctx.font = '18px sans-serif';
   //width: 94;
-  ctx.fillText('Play again?', 210, 335);
+  ctx.fillText('Play again?', (canvasWidth/2)-45, (canvasHeight/2)+5);
 }
 
 function pieceIntersecting() {
