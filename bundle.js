@@ -256,14 +256,6 @@ function resetVars() {
 
 function play() {
 
-  pieceTimer += 1;
-
-  if (pieceTimer === 10) {
-    pieceY += (cubeSide + border);
-    pieceYGrid += 1;
-    pieceTimer = 0;
-  }
-
   pieceCheck("down");
 
   if (rotateDelay > 0) {
@@ -482,16 +474,44 @@ function deleteRow(row) {
 
 function startGame() {
   document.removeEventListener("click", startGame);
+  document.addEventListener("click", pause);
   over = false;
   begun = true;
   playInterval = setInterval(play, 50);
+  downInterval = setInterval(pieceDown, 50);
   resetVars();
 }
 
 function gameOver() {
   over = true;
+  document.removeEventListener("click", pause);
   clearInterval(playInterval);
+  clearInterval(downInterval);
   document.addEventListener("click", startGame, false);
+}
+
+function pieceDown() {
+  pieceTimer += 1;
+
+  if (pieceTimer === 10) {
+    pieceY += (cubeSide + border);
+    pieceYGrid += 1;
+    pieceTimer = 0;
+  }
+}
+
+function pause() {
+  document.removeEventListener("click", pause);
+  document.addEventListener("click", resume);
+  clearInterval(downInterval);
+  clearInterval(playInterval);
+}
+
+function resume() {
+  document.removeEventListener("click", resume);
+  document.addEventListener("click", pause);
+  playInterval = setInterval(play, 50);
+  downInterval = setInterval(pieceDown, 50);
 }
 
 function keyDownHandler(e) {
