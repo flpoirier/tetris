@@ -158,6 +158,8 @@ function drawGrid() {
 
     drawNextPiece();
 
+    printScore();
+
     if (!begun) {
       drawIntro();
     }
@@ -376,10 +378,18 @@ function resume() {
 }
 
 function printScore() {
-  let scoreDisplay = document.getElementById("score");
-  let rowsDisplay = document.getElementById("rows");
-  scoreDisplay.innerHTML = `Score: ${score}`;
-  rowsDisplay.innerHTML = `Rows: ${numRows}`;
+  let x = canvasWidth + cubeSide*1.5;
+  let y = (cubeSide*6.5) + (border*3) + (outerBorder*2);
+
+  ctx.font = '24px sans-serif';
+
+  ctx.fillStyle = "blue";
+  ctx.fillText(`Score: ${score}`, x, y);
+
+  y += 30;
+
+  ctx.fillStyle = "red";
+  ctx.fillText(`Rows: ${numRows}`, x, y);
 }
 
 
@@ -418,4 +428,3 @@ document.addEventListener("keydown", keyDownHandler, false);
 document.addEventListener("keyup", keyUpHandler, false);
 
 drawInterval = setInterval(drawGrid, 50);
-scoreInterval = setInterval(printScore, 50);
