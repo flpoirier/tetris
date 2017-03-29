@@ -145,16 +145,17 @@ module.exports = pieces;
 /* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var sqrsAcross = 16;
+var sqrsAcross = 10;
 var sqrsTall = 20;
 var cubeSide = 30;
-var outerBorder = 5;
-var border = 2;
+var outerBorder = 10;
+var border = 3;
+var borderDiff = outerBorder - border;
 
 var canvas = document.getElementById("myCanvas");
 var ctx = canvas.getContext("2d");
-var canvasWidth = ((cubeSide + border) * sqrsAcross) + border;
-var canvasHeight = ((cubeSide + border) * sqrsTall) + border;
+var canvasWidth = ((cubeSide + border) * sqrsAcross) + border + borderDiff*2;
+var canvasHeight = ((cubeSide + border) * sqrsTall) + border + borderDiff*2;
 
 var upPressed = false;
 var downPressed = false;
@@ -167,8 +168,8 @@ var downDelay = 0;
 
 var pieceYGrid = 0;
 var pieceXGrid = Math.floor(Math.random() * 13);
-var pieceY = border;
-var pieceX = (pieceXGrid) * (cubeSide + border) + border;
+var pieceY = outerBorder;
+var pieceX = (pieceXGrid) * (cubeSide + border) + outerBorder;
 var pieceTimer = 0;
 var piecePos = 0;
 
@@ -186,9 +187,16 @@ colors["y"] = "yellow";
 colors["g"] = "green";
 colors["b"] = "blue";
 colors["p"] = "purple";
-colors["k"] = "pink";
+colors["k"] = "#FF69B4";
 
-var grid = [
+
+function createRow() {
+  return Array.apply(null, Array(sqrsAcross)).map(String.prototype.valueOf,"x");
+}
+
+var grid = new Array(sqrsTall).fill( Array.apply(null, Array(sqrsAcross)).map(String.prototype.valueOf,"x") );
+
+var griddd = [
 
   ["x","x","x","x","x","x","x","x","x","x","x","x","x","x","x","x"],
   ["x","x","x","x","x","x","x","x","x","x","x","x","x","x","x","x"],
@@ -221,8 +229,8 @@ function resetVars() {
 
   pieceYGrid = 0;
   pieceXGrid = Math.floor(Math.random() * 13);
-  pieceY = border;
-  pieceX = (pieceXGrid) * (cubeSide + border) + border;
+  pieceY = outerBorder;
+  pieceX = (pieceXGrid) * (cubeSide + border) + outerBorder;
   pieceTimer = 0;
   piecePos = 0;
   piece = pieces[Math.floor(Math.random() * 7)];
@@ -310,15 +318,15 @@ function play() {
 }
 
 function drawGrid() {
-  // 
+
   // ctx.fillStyle = "orange";
   // ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  var x = border;
-  var y = border;
+  var x = outerBorder;
+  var y = outerBorder;
 
-  ctx.fillStyle = "#777777";
-  ctx.fillRect(0, 0, (sqrsAcross*(cubeSide+border)+border), (sqrsTall*(cubeSide+border)+border));
+  ctx.fillStyle = "#444444";
+  ctx.fillRect(0, 0, canvasWidth, canvasHeight);
 
   grid.forEach((row) => {
 
@@ -331,7 +339,7 @@ function drawGrid() {
     });
 
     y += cubeSide + border;
-    x = border;
+    x = outerBorder;
     drawPiece();
 
     if (!begun) {
@@ -444,8 +452,8 @@ function newPiece() {
   drawPiece();
   pieceYGrid = 0;
   pieceXGrid = Math.floor(Math.random() * 13);
-  pieceY = border;
-  pieceX = (pieceXGrid) * (cubeSide + border) + border;
+  pieceY = outerBorder;
+  pieceX = (pieceXGrid) * (cubeSide + border) + outerBorder;
   pieceTimer = 0;
   piecePos = 0;
   piece = pieces[Math.floor(Math.random() * 7)];
