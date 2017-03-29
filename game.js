@@ -127,6 +127,8 @@ function play() {
 
   checkRows();
 
+  drawGrid();
+
 }
 
 function drawGrid() {
@@ -427,4 +429,4 @@ document.addEventListener("click", startGame, false);
 document.addEventListener("keydown", keyDownHandler, false);
 document.addEventListener("keyup", keyUpHandler, false);
 
-drawInterval = setInterval(drawGrid, 50);
+drawGrid();
