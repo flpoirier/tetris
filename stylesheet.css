@@ -1,9 +1,12 @@
 * {
-  padding: 0; margin: 0;
+  padding: 0;
+  margin: 0;
 }
 
 canvas {
-  display: block; margin: 0 auto;
+  display: block;
+  margin: 0 auto;
+  margin-top: 30px;
 }
 
 canvas:hover {
