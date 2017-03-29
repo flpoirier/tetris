@@ -12,3 +12,10 @@ canvas {
 canvas:hover {
   cursor: pointer;
 }
+
+div {
+  display: block;
+  font-size: 20px;
+  font-weight: bold;
+  color: "green";
+}

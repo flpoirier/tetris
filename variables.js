@@ -31,13 +31,3 @@ var over = false;
 
 var pieces = require('./pieces.js');
 var piece = pieces[Math.floor(Math.random() * 7)];
-
-var colors = {};
-colors["x"] = "#DDDDDD";
-colors["r"] = "red";
-colors["o"] = "orange";
-colors["y"] = "yellow";
-colors["g"] = "green";
-colors["b"] = "blue";
-colors["p"] = "purple";
-colors["k"] = "#FF69B4";

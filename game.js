@@ -1,4 +1,4 @@
-var sqrsAcross = 10;
+var sqrsAcross = 12;
 var sqrsTall = 20;
 var cubeSide = 30;
 var outerBorder = 10;
@@ -29,25 +29,22 @@ var piecePos;
 var begun = false;
 var over = false;
 
+var pieceWorth = 10;
+var rowWorth = 100;
+
+var score;
+var numRows;
+
 var pieces = require('./pieces.js');
 var piece;
 var grid;
 
+var emptyColor = "#DDDDDD"; // grey
+
 resetVars();
 
-var colors = {};
-colors["x"] = "#DDDDDD";
-colors["r"] = "red";
-colors["o"] = "orange";
-colors["y"] = "yellow";
-colors["g"] = "green";
-colors["b"] = "blue";
-colors["p"] = "purple";
-colors["k"] = "#FF69B4";
-
-
 function createRow() {
-  return Array.apply(null, Array(sqrsAcross)).map(String.prototype.valueOf,"x");
+  return Array.apply(null, Array(sqrsAcross)).map(String.prototype.valueOf,emptyColor);
 }
 
 function createGrid() {
@@ -60,6 +57,9 @@ function resetVars() {
   sideDelay = 0;
   downDelay = 0;
 
+  score = 0;
+  numRows = 0;
+
   pieceYGrid = 0;
   pieceXGrid = Math.floor(Math.random() * (sqrsAcross-3));
   pieceY = outerBorder;
@@ -67,6 +67,7 @@ function resetVars() {
   pieceTimer = 0;
   piecePos = 0;
   piece = pieces[Math.floor(Math.random() * 7)];
+
   grid = createGrid();
 
 }
@@ -129,8 +130,8 @@ function drawGrid() {
 
   ctx.clearRect(0,0, canvas.width, canvas.height);
 
-  // ctx.fillStyle = "orange";
-  // ctx.fillRect(0,0,canvas.width, canvas.height);
+  ctx.fillStyle = "orange";
+  ctx.fillRect(0,0,canvas.width, canvas.height);
 
   var x = outerBorder;
   var y = outerBorder;
@@ -142,7 +143,7 @@ function drawGrid() {
 
     row.forEach((square) => {
 
-      ctx.fillStyle = colors[square];
+      ctx.fillStyle = square;
       ctx.fillRect(x,y,cubeSide,cubeSide);
       x += cubeSide + border;
 
@@ -171,7 +172,7 @@ function drawPiece() {
   if (!begun) {
     return;
   }
-  ctx.fillStyle = colors[piece.symbol];
+  ctx.fillStyle = piece.color;
   for (let idx = 0; idx < 4; idx++) {
     let x = piece[piecePos][idx][0];
     let y = piece[piecePos][idx][1];
@@ -220,7 +221,7 @@ function pieceIntersecting() {
       intersecting = true;
     } else if (x < 0) {
       intersecting = true;
-    } else if (grid[y][x] != "x") {
+    } else if (grid[y][x] != emptyColor) {
       intersecting = true;
     }
   }
@@ -254,8 +255,9 @@ function pieceStop() {
   for (let idx = 0; idx < 4; idx++) {
     let x = piece[piecePos][idx][0] + pieceXGrid;
     let y = piece[piecePos][idx][1] + pieceYGrid;
-    grid[y][x] = piece.symbol;
+    grid[y][x] = piece.color;
   }
+  score += pieceWorth;
 }
 
 function newPiece() {
@@ -276,7 +278,7 @@ function checkRows() {
   for (let row = 0; row < sqrsTall; row++) {
     let white = false;
     for (let col = 0; col < sqrsAcross; col++) {
-      if (grid[row][col] === "x") {
+      if (grid[row][col] === emptyColor) {
         white = true;
       }
     }
@@ -289,6 +291,8 @@ function checkRows() {
 function deleteRow(row) {
   grid.splice(row, 1);
   grid.unshift(createRow());
+  numRows += 1;
+  score += rowWorth;
 }
 
 function startGame() {
@@ -333,6 +337,14 @@ function resume() {
   downInterval = setInterval(pieceDown, 50);
 }
 
+function printScore() {
+  let scoreDisplay = document.getElementById("score");
+  let rowsDisplay = document.getElementById("rows");
+  scoreDisplay.innerHTML = `Score: ${score}`;
+  rowsDisplay.innerHTML = `Rows: ${numRows}`;
+}
+
+
 function keyDownHandler(e) {
   if(e.keyCode == 39) {
     rightPressed = true;
@@ -368,3 +380,4 @@ document.addEventListener("keydown", keyDownHandler, false);
 document.addEventListener("keyup", keyUpHandler, false);
 
 drawInterval = setInterval(drawGrid, 50);
+scoreInterval = setInterval(printScore, 50);
