@@ -407,7 +407,7 @@ function drawOutro() {
   //width = 236; half width = about 118; height = 48; half height = 24;
   // canvas width="514" height="642"
   ctx.fillStyle = "red";
-  ctx.fillText('GAME OVER', xCoord+5, yCoord+70);
+  ctx.fillText('GAME OVER', xCoord+6, yCoord+70);
 
   ctx.fillStyle = "blue";
   ctx.font = '18px sans-serif';
