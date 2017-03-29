@@ -9,3 +9,4 @@ Features in progress:
 - Score / levels
 - Gradually increase of speed
 - General CSS / design
+- Split it into modules for better readability
