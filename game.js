@@ -47,7 +47,11 @@ function createRow() {
   return Array.apply(null, Array(sqrsAcross)).map(String.prototype.valueOf,"x");
 }
 
-var grid = new Array(sqrsTall).fill( Array.apply(null, Array(sqrsAcross)).map(String.prototype.valueOf,"x") );
+function createGrid() {
+  return Array.apply(null, Array(sqrsTall)).map( createRow );
+}
+
+var grid = createGrid();
 
 function resetVars() {
 
@@ -62,7 +66,7 @@ function resetVars() {
   pieceTimer = 0;
   piecePos = 0;
   piece = pieces[Math.floor(Math.random() * 7)];
-  grid = new Array(sqrsTall).fill( Array.apply(null, Array(sqrsAcross)).map(String.prototype.valueOf,"x") );
+  grid = createGrid();
 
 }
 
@@ -122,8 +126,7 @@ function play() {
 
 function drawGrid() {
 
-  // ctx.fillStyle = "orange";
-  // ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.clearRect(0,0, canvas.width, canvas.height);
 
   var x = outerBorder;
   var y = outerBorder;

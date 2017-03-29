@@ -167,7 +167,7 @@ var sideDelay = 0;
 var downDelay = 0;
 
 var pieceYGrid = 0;
-var pieceXGrid = Math.floor(Math.random() * 13);
+var pieceXGrid = Math.floor(Math.random() * (sqrsAcross-3));
 var pieceY = outerBorder;
 var pieceX = (pieceXGrid) * (cubeSide + border) + outerBorder;
 var pieceTimer = 0;
@@ -194,32 +194,11 @@ function createRow() {
   return Array.apply(null, Array(sqrsAcross)).map(String.prototype.valueOf,"x");
 }
 
-var grid = new Array(sqrsTall).fill( Array.apply(null, Array(sqrsAcross)).map(String.prototype.valueOf,"x") );
+function createGrid() {
+  return Array.apply(null, Array(sqrsTall)).map( createRow );
+}
 
-var griddd = [
-
-  ["x","x","x","x","x","x","x","x","x","x","x","x","x","x","x","x"],
-  ["x","x","x","x","x","x","x","x","x","x","x","x","x","x","x","x"],
-  ["x","x","x","x","x","x","x","x","x","x","x","x","x","x","x","x"],
-  ["x","x","x","x","x","x","x","x","x","x","x","x","x","x","x","x"],
-  ["x","x","x","x","x","x","x","x","x","x","x","x","x","x","x","x"],
-  ["x","x","x","x","x","x","x","x","x","x","x","x","x","x","x","x"],
-  ["x","x","x","x","x","x","x","x","x","x","x","x","x","x","x","x"],
-  ["x","x","x","x","x","x","x","x","x","x","x","x","x","x","x","x"],
-  ["x","x","x","x","x","x","x","x","x","x","x","x","x","x","x","x"],
-  ["x","x","x","x","x","x","x","x","x","x","x","x","x","x","x","x"],
-  ["x","x","x","x","x","x","x","x","x","x","x","x","x","x","x","x"],
-  ["x","x","x","x","x","x","x","x","x","x","x","x","x","x","x","x"],
-  ["x","x","x","x","x","x","x","x","x","x","x","x","x","x","x","x"],
-  ["x","x","x","x","x","x","x","x","x","x","x","x","x","x","x","x"],
-  ["x","x","x","x","x","x","x","x","x","x","x","x","x","x","x","x"],
-  ["x","x","x","x","x","x","x","x","x","x","x","x","x","x","x","x"],
-  ["x","x","x","x","x","x","x","x","x","x","x","x","x","x","x","x"],
-  ["x","x","x","x","x","x","x","x","x","x","x","x","x","x","x","x"],
-  ["x","x","x","x","x","x","x","x","x","x","x","x","x","x","x","x"],
-  ["x","x","x","x","x","x","x","x","x","x","x","x","x","x","x","x"],
-
-];
+var grid = createGrid();
 
 function resetVars() {
 
@@ -228,38 +207,13 @@ function resetVars() {
   downDelay = 0;
 
   pieceYGrid = 0;
-  pieceXGrid = Math.floor(Math.random() * 13);
+  pieceXGrid = Math.floor(Math.random() * (sqrsAcross-3));
   pieceY = outerBorder;
   pieceX = (pieceXGrid) * (cubeSide + border) + outerBorder;
   pieceTimer = 0;
   piecePos = 0;
   piece = pieces[Math.floor(Math.random() * 7)];
-
-
-  grid = [
-
-    ["x","x","x","x","x","x","x","x","x","x","x","x","x","x","x","x"],
-    ["x","x","x","x","x","x","x","x","x","x","x","x","x","x","x","x"],
-    ["x","x","x","x","x","x","x","x","x","x","x","x","x","x","x","x"],
-    ["x","x","x","x","x","x","x","x","x","x","x","x","x","x","x","x"],
-    ["x","x","x","x","x","x","x","x","x","x","x","x","x","x","x","x"],
-    ["x","x","x","x","x","x","x","x","x","x","x","x","x","x","x","x"],
-    ["x","x","x","x","x","x","x","x","x","x","x","x","x","x","x","x"],
-    ["x","x","x","x","x","x","x","x","x","x","x","x","x","x","x","x"],
-    ["x","x","x","x","x","x","x","x","x","x","x","x","x","x","x","x"],
-    ["x","x","x","x","x","x","x","x","x","x","x","x","x","x","x","x"],
-    ["x","x","x","x","x","x","x","x","x","x","x","x","x","x","x","x"],
-    ["x","x","x","x","x","x","x","x","x","x","x","x","x","x","x","x"],
-    ["x","x","x","x","x","x","x","x","x","x","x","x","x","x","x","x"],
-    ["x","x","x","x","x","x","x","x","x","x","x","x","x","x","x","x"],
-    ["x","x","x","x","x","x","x","x","x","x","x","x","x","x","x","x"],
-    ["x","x","x","x","x","x","x","x","x","x","x","x","x","x","x","x"],
-    ["x","x","x","x","x","x","x","x","x","x","x","x","x","x","x","x"],
-    ["x","x","x","x","x","x","x","x","x","x","x","x","x","x","x","x"],
-    ["x","x","x","x","x","x","x","x","x","x","x","x","x","x","x","x"],
-    ["x","x","x","x","x","x","x","x","x","x","x","x","x","x","x","x"],
-
-  ];
+  grid = createGrid();
 
 }
 
@@ -319,8 +273,7 @@ function play() {
 
 function drawGrid() {
 
-  // ctx.fillStyle = "orange";
-  // ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.clearRect(0,0, canvas.width, canvas.height);
 
   var x = outerBorder;
   var y = outerBorder;
@@ -451,7 +404,7 @@ function pieceStop() {
 function newPiece() {
   drawPiece();
   pieceYGrid = 0;
-  pieceXGrid = Math.floor(Math.random() * 13);
+  pieceXGrid = Math.floor(Math.random() * (sqrsAcross-3));
   pieceY = outerBorder;
   pieceX = (pieceXGrid) * (cubeSide + border) + outerBorder;
   pieceTimer = 0;
