@@ -1,6 +1,7 @@
 var sqrsAcross = 16;
 var sqrsTall = 20;
 var cubeSide = 30;
+var outerBorder = 5;
 var border = 2;
 
 var canvas = document.getElementById("myCanvas");
@@ -19,7 +20,7 @@ var downDelay = 0;
 
 var pieceYGrid = 0;
 var pieceXGrid = Math.floor(Math.random() * 13);
-var pieceY = 2;
+var pieceY = border;
 var pieceX = (pieceXGrid) * (cubeSide + border) + border;
 var pieceTimer = 0;
 var piecePos = 0;
@@ -73,7 +74,7 @@ function resetVars() {
 
   pieceYGrid = 0;
   pieceXGrid = Math.floor(Math.random() * 13);
-  pieceY = 2;
+  pieceY = border;
   pieceX = (pieceXGrid) * (cubeSide + border) + border;
   pieceTimer = 0;
   piecePos = 0;
@@ -162,15 +163,15 @@ function play() {
 }
 
 function drawGrid() {
+  // 
+  // ctx.fillStyle = "orange";
+  // ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  ctx.fillStyle = "orange";
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-  var x = 2;
-  var y = 2;
+  var x = border;
+  var y = border;
 
   ctx.fillStyle = "#777777";
-  ctx.fillRect(0, 0, (sqrsAcross*(cubeSide+2)+2), (sqrsTall*(cubeSide+2)+2));
+  ctx.fillRect(0, 0, (sqrsAcross*(cubeSide+border)+border), (sqrsTall*(cubeSide+border)+border));
 
   grid.forEach((row) => {
 
@@ -178,12 +179,12 @@ function drawGrid() {
 
       ctx.fillStyle = colors[square];
       ctx.fillRect(x,y,cubeSide,cubeSide);
-      x += cubeSide + 2;
+      x += cubeSide + border;
 
     });
 
-    y += cubeSide + 2;
-    x = 2;
+    y += cubeSide + border;
+    x = border;
     drawPiece();
 
     if (!begun) {
@@ -296,7 +297,7 @@ function newPiece() {
   drawPiece();
   pieceYGrid = 0;
   pieceXGrid = Math.floor(Math.random() * 13);
-  pieceY = 2;
+  pieceY = border;
   pieceX = (pieceXGrid) * (cubeSide + border) + border;
   pieceTimer = 0;
   piecePos = 0;
