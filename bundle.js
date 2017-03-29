@@ -181,9 +181,11 @@ var numRows;
 
 var pieces = __webpack_require__(0);
 var piece;
+var nextPiece;
 var grid;
 
 var emptyColor = "#DDDDDD"; // grey
+var borderColor = "#444444";
 
 resetVars();
 
@@ -211,6 +213,7 @@ function resetVars() {
   pieceTimer = 0;
   piecePos = 0;
   piece = pieces[Math.floor(Math.random() * 7)];
+  nextPiece = pieces[Math.floor(Math.random() * 7)];
 
   grid = createGrid();
 
@@ -274,13 +277,13 @@ function drawGrid() {
 
   ctx.clearRect(0,0, canvas.width, canvas.height);
 
-  ctx.fillStyle = "orange";
-  ctx.fillRect(0,0,canvas.width, canvas.height);
+  // ctx.fillStyle = "orange";
+  // ctx.fillRect(0,0,canvas.width, canvas.height);
 
   var x = outerBorder;
   var y = outerBorder;
 
-  ctx.fillStyle = "#444444";
+  ctx.fillStyle = borderColor;
   ctx.fillRect(0, 0, canvasWidth, canvasHeight);
 
   grid.forEach((row) => {
@@ -297,6 +300,8 @@ function drawGrid() {
     x = outerBorder;
     drawPiece();
 
+    drawNextPiece();
+
     if (!begun) {
       drawIntro();
     }
@@ -306,6 +311,38 @@ function drawGrid() {
     }
 
   });
+
+}
+
+function drawNextPiece() {
+
+  ctx.fillStyle = borderColor;
+  let xCoord = canvasWidth + cubeSide;
+  let yCoord = cubeSide;
+  let sideLength = (cubeSide*4)+(border*3)+(outerBorder*2);
+  ctx.fillRect(xCoord,yCoord,sideLength,sideLength);
+
+  xCoord += outerBorder;
+  yCoord += outerBorder;
+  ctx.fillStyle = emptyColor;
+
+  for (let i = 0; i < 4; i++) {
+    for (let j = 0; j < 4; j++) {
+      ctx.fillRect(xCoord,yCoord,cubeSide,cubeSide);
+      xCoord += cubeSide + border;
+    }
+    xCoord = canvasWidth + cubeSide + outerBorder;
+    yCoord += cubeSide + border;
+  }
+
+  for (let idx = 0; idx < 4; idx++) {
+    let x = nextPiece[0][idx][0];
+    let y = nextPiece[0][idx][1];
+    xCoord = canvasWidth + cubeSide + outerBorder;
+    yCoord = cubeSide + outerBorder;
+    ctx.fillStyle = nextPiece.color;
+    ctx.fillRect(xCoord+(x*(cubeSide + border)), yCoord+(y*(cubeSide + border)), cubeSide, cubeSide);
+  }
 
 }
 
@@ -412,7 +449,8 @@ function newPiece() {
   pieceX = (pieceXGrid) * (cubeSide + border) + outerBorder;
   pieceTimer = 0;
   piecePos = 0;
-  piece = pieces[Math.floor(Math.random() * 7)];
+  piece = nextPiece;
+  nextPiece = pieces[Math.floor(Math.random() * 7)];
   if (pieceIntersecting()) {
     gameOver();
   }
