@@ -35,6 +35,7 @@ class Game {
     this.emptyColor = "#DDDDDD"; // grey
     this.borderColor = "#444444";
 
+    this.startSpeed = 50;
 
     this.createRow = this.createRow.bind(this);
     this.createGrid = this.createGrid.bind(this);
@@ -62,6 +63,7 @@ class Game {
     this.resume = this.resume.bind(this);
     this.keyDownHandler = this.keyDownHandler.bind(this);
     this.keyUpHandler = this.keyUpHandler.bind(this);
+    this.levelUp = this.levelUp.bind(this);
 
 
     this.resetVars();
@@ -91,6 +93,8 @@ class Game {
 
     this.score = 0;
     this.numRows = 0;
+    this.level = 1;
+    this.speed = this.startSpeed;
 
     this.pieceYGrid = 0;
     this.pieceXGrid = Math.floor(Math.random() * (this.sqrsAcross-3));
@@ -248,16 +252,19 @@ class Game {
     this.grid.unshift(this.createRow());
     this.numRows += 1;
     this.score += this.rowWorth;
+    if (this.numRows % 2 === 0) {
+      this.levelUp();
+    }
   }
 
   startGame() {
     document.removeEventListener("click", this.startGame);
     document.addEventListener("click", this.pause);
+    this.resetVars();
     this.over = false;
     this.begun = true;
     this.playInterval = setInterval(this.play, 50);
-    this.downInterval = setInterval(this.pieceDown, 50);
-    this.resetVars();
+    this.downInterval = setInterval(this.pieceDown, this.speed);
   }
 
   gameOver() {
@@ -289,7 +296,14 @@ class Game {
     document.removeEventListener("click", this.resume);
     document.addEventListener("click", this.pause);
     this.playInterval = setInterval(this.play, 50);
-    this.downInterval = setInterval(this.pieceDown, 50);
+    this.downInterval = setInterval(this.pieceDown, this.speed);
+  }
+
+  levelUp() {
+    this.speed = Math.floor(this.speed/2);
+    clearInterval(this.downInterval);
+    this.downInterval = setInterval(this.pieceDown, this.speed);
+    this.level += 1;
   }
 
 

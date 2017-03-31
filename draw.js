@@ -157,6 +157,11 @@ class DrawingFunctions {
 
     this.ctx.font = '24px sans-serif';
 
+    this.ctx.fillStyle = "green";
+    this.ctx.fillText(`Level ${this.level}`, x, y);
+
+    y += 30;
+
     this.ctx.fillStyle = "blue";
     this.ctx.fillText(`Score: ${this.score}`, x, y);
 
