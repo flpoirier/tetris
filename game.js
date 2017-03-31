@@ -1,9 +1,11 @@
 
 const Pieces = require('./pieces.js');
+const DrawingFunctions = require('./draw.js');
 
 class Game {
 
   constructor() {
+
     this.sqrsAcross = 12;
     this.sqrsTall = 20;
     this.cubeSide = 30;
@@ -21,31 +23,14 @@ class Game {
     this.leftPressed = false;
     this.rightPressed = false;
 
-    // this.rotateDelay;
-    // this.sideDelay;
-    // this.downDelay;
-
-    // this.pieceYGrid;
-    // this.pieceXGrid;
-    // this.pieceY;
-    // this.pieceX;
-    // this.pieceTimer;
-    // this.piecePos;
-
     this.begun = false;
     this.over = false;
 
     this.pieceWorth = 10;
     this.rowWorth = 100;
 
-    // this.score;
-    // this.numRows;
-
     let pieceSet = new Pieces();
     this.pieces = pieceSet.pieces;
-    // this.piece;
-    // this.nextPiece;
-    // this.grid;
 
     this.emptyColor = "#DDDDDD"; // grey
     this.borderColor = "#444444";
@@ -55,11 +40,15 @@ class Game {
     this.createGrid = this.createGrid.bind(this);
     this.resetVars = this.resetVars.bind(this);
     this.play = this.play.bind(this);
-    this.drawGrid = this.drawGrid.bind(this);
-    this.drawNextPiece = this.drawNextPiece.bind(this);
-    this.drawPiece = this.drawPiece.bind(this);
-    this.drawIntro = this.drawIntro.bind(this);
-    this.drawOutro = this.drawOutro.bind(this);
+
+    let draw = new DrawingFunctions(this);
+    this.drawGrid = draw.drawGrid;
+    this.drawNextPiece = draw.drawNextPiece;
+    this.drawPiece = draw.drawPiece;
+    this.drawIntro = draw.drawIntro;
+    this.drawOutro = draw.drawOutro;
+    this.printScore = draw.printScore;
+
     this.pieceIntersecting = this.pieceIntersecting.bind(this);
     this.pieceCheck = this.pieceCheck.bind(this);
     this.pieceStop = this.pieceStop.bind(this);
@@ -71,7 +60,6 @@ class Game {
     this.pieceDown = this.pieceDown.bind(this);
     this.pause = this.pause.bind(this);
     this.resume = this.resume.bind(this);
-    this.printScore = this.printScore.bind(this);
     this.keyDownHandler = this.keyDownHandler.bind(this);
     this.keyUpHandler = this.keyUpHandler.bind(this);
 
@@ -171,146 +159,6 @@ class Game {
 
     this.drawGrid();
 
-  }
-
-  drawGrid() {
-
-    this.ctx.clearRect(0,0, this.canvas.width, this.canvas.height);
-
-    // ctx.fillStyle = "orange";
-    // ctx.fillRect(0,0,canvas.width, canvas.height);
-
-    var x = this.outerBorder;
-    var y = this.outerBorder;
-
-    this.ctx.fillStyle = this.borderColor;
-    this.ctx.fillRect(0, 0, this.canvasWidth, this.canvasHeight);
-
-    this.grid.forEach((row) => {
-
-      row.forEach((square) => {
-
-        this.ctx.fillStyle = square;
-        this.ctx.fillRect(x,y,this.cubeSide,this.cubeSide);
-        x += this.cubeSide + this.border;
-
-      });
-
-      y += this.cubeSide + this.border;
-      x = this.outerBorder;
-      this.drawPiece();
-
-      this.drawNextPiece();
-
-      this.printScore();
-
-      if (!this.begun) {
-        this.drawIntro();
-      }
-
-      if (this.over) {
-        this.drawOutro();
-      }
-
-    });
-
-  }
-
-  drawNextPiece() {
-
-    this.ctx.fillStyle = this.borderColor;
-    let xCoord = this.canvasWidth + this.cubeSide;
-    let yCoord = this.cubeSide;
-    let sideLength = (this.cubeSide*4)+(this.border*3)+(this.outerBorder*2);
-    this.ctx.fillRect(xCoord,yCoord,sideLength,sideLength);
-
-    xCoord += this.outerBorder;
-    yCoord += this.outerBorder;
-    this.ctx.fillStyle = this.emptyColor;
-
-    for (let i = 0; i < 4; i++) {
-      for (let j = 0; j < 4; j++) {
-        this.ctx.fillRect(xCoord,yCoord,this.cubeSide,this.cubeSide);
-        xCoord += this.cubeSide + this.border;
-      }
-      xCoord = this.canvasWidth + this.cubeSide + this.outerBorder;
-      yCoord += this.cubeSide + this.border;
-    }
-
-    for (let idx = 0; idx < 4; idx++) {
-      let x = this.nextPiece[0][idx][0];
-      let y = this.nextPiece[0][idx][1];
-      xCoord = this.canvasWidth + this.cubeSide + this.outerBorder;
-      yCoord = this.cubeSide + this.outerBorder;
-      this.ctx.fillStyle = this.nextPiece.color;
-      this.ctx.fillRect(xCoord+(x*(this.cubeSide + this.border)), yCoord+(y*(this.cubeSide + this.border)), this.cubeSide, this.cubeSide);
-    }
-
-  }
-
-  drawPiece() {
-    if (this.over) {
-      return;
-    }
-    if (!this.begun) {
-      return;
-    }
-    this.ctx.fillStyle = this.piece.color;
-    for (let idx = 0; idx < 4; idx++) {
-      let x = this.piece[this.piecePos][idx][0];
-      let y = this.piece[this.piecePos][idx][1];
-      this.ctx.fillRect(this.pieceX+(x*(this.cubeSide + this.border)), this.pieceY+(y*(this.cubeSide + this.border)), this.cubeSide, this.cubeSide);
-    }
-  }
-
-  drawIntro() {
-
-    let xCoord = 3*this.cubeSide + 3*this.border + this.outerBorder;
-    let yCoord = 7*this.cubeSide + 7*this.border + this.outerBorder;
-    let width = (this.sqrsAcross - 6)*(this.cubeSide+this.border) - this.border;
-    let height = 5*(this.cubeSide + this.border) - this.border;
-
-    this.ctx.fillStyle = "#888888";
-    this.ctx.fillRect(xCoord-this.outerBorder, yCoord-this.outerBorder, width+(2*this.outerBorder), height+(2*this.outerBorder));
-
-    this.ctx.fillStyle = "white";//"#4B0082";
-    this.ctx.fillRect(xCoord,yCoord,width,height);
-    this.ctx.font = '48px sans-serif';
-    this.ctx.fillStyle = "blue";
-    //width = 171; half width = about 85; height = 48; half height = 24;
-    // canvas width="514" height="642"
-
-    this.ctx.fillText('TETRIS', (this.canvasWidth/2)-85, (this.canvasHeight/2)-24);
-
-    this.ctx.fillStyle = "red";
-    this.ctx.font = '18px sans-serif';
-    //width: 100;
-    this.ctx.fillText('Click to play!', (this.canvasWidth/2)-50, (this.canvasHeight/2)+15);
-  }
-
-  drawOutro() {
-
-    let xCoord = 3*this.cubeSide + 3*this.border + this.outerBorder;
-    let yCoord = 7*this.cubeSide + 7*this.border + this.outerBorder;
-    let width = (this.sqrsAcross - 6)*(this.cubeSide+this.border) - this.border;
-    let height = 5*(this.cubeSide + this.border) - this.border;
-
-    this.ctx.fillStyle = "#888888";
-    this.ctx.fillRect(xCoord-this.outerBorder, yCoord-this.outerBorder, width+(2*this.outerBorder), height+(2*this.outerBorder));
-
-    this.ctx.fillStyle = "white";//"#4B0082";
-    this.ctx.fillRect(xCoord,yCoord,width,height);
-    this.ctx.font = '30px sans-serif';
-    this.ctx.fillStyle = "black";
-    //width = 236; half width = about 118; height = 48; half height = 24;
-    // canvas width="514" height="642"
-    this.ctx.fillStyle = "red";
-    this.ctx.fillText('GAME OVER', xCoord+6, yCoord+70);
-
-    this.ctx.fillStyle = "blue";
-    this.ctx.font = '18px sans-serif';
-    //width: 94;
-    this.ctx.fillText('Play again?', (this.canvasWidth/2)-45, (this.canvasHeight/2)+5);
   }
 
   pieceIntersecting() {
@@ -439,21 +287,6 @@ class Game {
     document.addEventListener("click", this.pause);
     this.playInterval = setInterval(this.play, 50);
     this.downInterval = setInterval(this.pieceDown, 50);
-  }
-
-  printScore() {
-    let x = this.canvasWidth + this.cubeSide*1.5;
-    let y = (this.cubeSide*6.5) + (this.border*3) + (this.outerBorder*2);
-
-    this.ctx.font = '24px sans-serif';
-
-    this.ctx.fillStyle = "blue";
-    this.ctx.fillText(`Score: ${this.score}`, x, y);
-
-    y += 30;
-
-    this.ctx.fillStyle = "red";
-    this.ctx.fillText(`Rows: ${this.numRows}`, x, y);
   }
 
 
