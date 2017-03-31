@@ -1,3 +1,6 @@
+
+const Pieces = require('./pieces.js');
+
 class Game {
 
   constructor() {
@@ -38,7 +41,8 @@ class Game {
     // this.score;
     // this.numRows;
 
-    this.pieces = require('./pieces.js');
+    let pieceSet = new Pieces();
+    this.pieces = pieceSet.pieces;
     // this.piece;
     // this.nextPiece;
     // this.grid;
