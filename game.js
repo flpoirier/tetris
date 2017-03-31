@@ -252,7 +252,7 @@ class Game {
     this.grid.unshift(this.createRow());
     this.numRows += 1;
     this.score += this.rowWorth;
-    if (this.numRows % 2 === 0) {
+    if (this.numRows % 5 === 0) {
       this.levelUp();
     }
   }
@@ -300,10 +300,12 @@ class Game {
   }
 
   levelUp() {
-    this.speed = Math.floor(this.speed/2);
-    clearInterval(this.downInterval);
-    this.downInterval = setInterval(this.pieceDown, this.speed);
-    this.level += 1;
+    if (this.speed > 5) {
+      this.speed -= 5;
+      clearInterval(this.downInterval);
+      this.downInterval = setInterval(this.pieceDown, this.speed);
+      this.level += 1;
+    }
   }
 
 
