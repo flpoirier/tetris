@@ -161,6 +161,20 @@ class Game {
 
   }
 
+  checkRows() {
+    for (let row = 0; row < this.sqrsTall; row++) {
+      let white = false;
+      for (let col = 0; col < this.sqrsAcross; col++) {
+        if (this.grid[row][col] === this.emptyColor) {
+          white = true;
+        }
+      }
+      if (!white) {
+        this.deleteRow(row);
+      }
+    }
+  }
+
   pieceIntersecting() {
     let intersecting = false;
     for (let idx = 0; idx < 4; idx++) {
@@ -180,6 +194,9 @@ class Game {
   }
 
   pieceCheck(direction) {
+    if (this.over) {
+      return;
+    }
     if (this.pieceIntersecting()) {
       if (direction === "left") {
         this.pieceX += (this.cubeSide + this.border);
@@ -223,20 +240,6 @@ class Game {
     this.nextPiece = this.pieces[Math.floor(Math.random() * 7)];
     if (this.pieceIntersecting()) {
       this.gameOver();
-    }
-  }
-
-  checkRows() {
-    for (let row = 0; row < this.sqrsTall; row++) {
-      let white = false;
-      for (let col = 0; col < this.sqrsAcross; col++) {
-        if (this.grid[row][col] === this.emptyColor) {
-          white = true;
-        }
-      }
-      if (!white) {
-        this.deleteRow(row);
-      }
     }
   }
 
