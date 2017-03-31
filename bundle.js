@@ -539,7 +539,7 @@ class Game {
         }
       }
       if (!white) {
-        deleteRow(row);
+        this.deleteRow(row);
       }
     }
   }
