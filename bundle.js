@@ -148,8 +148,8 @@ class DrawingFunctions {
     }
 
     for (let idx = 0; idx < 4; idx++) {
-      let x = this.nextPiece[0][idx][0];
-      let y = this.nextPiece[0][idx][1];
+      let x = this.nextPiece[this.nextPiecePos][idx][0];
+      let y = this.nextPiece[this.nextPiecePos][idx][1];
       xCoord = this.canvasWidth + this.cubeSide + this.outerBorder;
       yCoord = this.cubeSide + this.outerBorder;
       this.ctx.fillStyle = this.nextPiece.color;
@@ -435,9 +435,10 @@ class Game {
     this.pieceY = this.outerBorder;
     this.pieceX = (this.pieceXGrid) * (this.cubeSide + this.border) + this.outerBorder;
     this.pieceTimer = 0;
-    this.piecePos = 0;
+    this.piecePos = Math.floor(Math.random() * 4);
     this.piece = this.pieces[Math.floor(Math.random() * 7)];
     this.nextPiece = this.pieces[Math.floor(Math.random() * 7)];
+    this.nextPiecePos = Math.floor(Math.random() * 4);
 
     this.grid = this.createGrid();
 
@@ -573,9 +574,10 @@ class Game {
     this.pieceY = this.outerBorder;
     this.pieceX = (this.pieceXGrid) * (this.cubeSide + this.border) + this.outerBorder;
     this.pieceTimer = 0;
-    this.piecePos = 0;
+    this.piecePos = this.nextPiecePos;
     this.piece = this.nextPiece;
     this.nextPiece = this.pieces[Math.floor(Math.random() * 7)];
+    this.nextPiecePos = Math.floor(Math.random() * 4);
     if (this.pieceIntersecting()) {
       this.gameOver();
     }

@@ -101,9 +101,10 @@ class Game {
     this.pieceY = this.outerBorder;
     this.pieceX = (this.pieceXGrid) * (this.cubeSide + this.border) + this.outerBorder;
     this.pieceTimer = 0;
-    this.piecePos = 0;
+    this.piecePos = Math.floor(Math.random() * 4);
     this.piece = this.pieces[Math.floor(Math.random() * 7)];
     this.nextPiece = this.pieces[Math.floor(Math.random() * 7)];
+    this.nextPiecePos = Math.floor(Math.random() * 4);
 
     this.grid = this.createGrid();
 
@@ -239,9 +240,10 @@ class Game {
     this.pieceY = this.outerBorder;
     this.pieceX = (this.pieceXGrid) * (this.cubeSide + this.border) + this.outerBorder;
     this.pieceTimer = 0;
-    this.piecePos = 0;
+    this.piecePos = this.nextPiecePos;
     this.piece = this.nextPiece;
     this.nextPiece = this.pieces[Math.floor(Math.random() * 7)];
+    this.nextPiecePos = Math.floor(Math.random() * 4);
     if (this.pieceIntersecting()) {
       this.gameOver();
     }

@@ -76,8 +76,8 @@ class DrawingFunctions {
     }
 
     for (let idx = 0; idx < 4; idx++) {
-      let x = this.nextPiece[0][idx][0];
-      let y = this.nextPiece[0][idx][1];
+      let x = this.nextPiece[this.nextPiecePos][idx][0];
+      let y = this.nextPiece[this.nextPiecePos][idx][1];
       xCoord = this.canvasWidth + this.cubeSide + this.outerBorder;
       yCoord = this.cubeSide + this.outerBorder;
       this.ctx.fillStyle = this.nextPiece.color;
