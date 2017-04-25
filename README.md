@@ -1,11 +1,11 @@
 <h1>Tetris</h1>
 
-This is a Tetris clone in progress. It's being built using jQuery.
+This is a Tetris clone built using JavaScript.
 
-Features in progress:
+Features include:
 
-- Levels
-- Gradually increase of speed
-- General CSS / design
-- Split it into modules for better readability
-- Game directions
+- Piece rotation, calculated using a relative coordinate system.
+- Speed of piece delivery gradually increases over ten levels.
+- Modules bundled using Webpack.
+
+<a href="http://www.flpoirier.com/tetris.html">Live version</a>
