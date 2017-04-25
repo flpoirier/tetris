@@ -13,9 +13,31 @@ canvas:hover {
   cursor: pointer;
 }
 
-div {
-  display: block;
-  font-size: 20px;
-  font-weight: bold;
-  color: "green";
+
+#footer {
+  text-align: center;
+  width: 600px;
+  margin: 0 auto;
+  margin-top: 20px;
+  font-family: sans-serif;
+  font-size: 16px;
+  font-weight: normal;
+}
+
+#links {
+  text-align: center;
+  width: 600px;
+  margin: 0 auto;
+  margin-top: 20px;
+  font-weight: normal;
+}
+
+a {
+  color: black;
+  text-decoration: none;
+  padding: 15px;
+}
+
+a:hover {
+  color: blue;
 }
